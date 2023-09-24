@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import Post from "../models/Post.js";
-import User from "../models/registerSchema.js";
+import User from "../models/User.js";
 
 
 // create post
@@ -64,12 +64,12 @@ export const likePost = async (req, res) => {
     console.log("like a post");
     try {
         const likePost = await Post.findById(req.params.id);
-        if(!likePost.likes.includes(req.body.userId)){
+        if(!likePost.like.includes(req.body.userId)){
 
-            await likePost.updateOne({$push:{likes: req.body.userId}});
+            await likePost.updateOne({$push:{like: req.body.userId}});
             res.status(200).json(" Post has been liked");
         }else{
-            await likePost.updateOne({$pull:{likes: req.body.userId}});
+            await likePost.updateOne({$pull:{like: req.body.userId}});
             res.status(200).json(" Post has been disliked");   
         }
     } catch (error) {

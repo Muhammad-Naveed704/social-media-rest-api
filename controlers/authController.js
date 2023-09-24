@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import User from '../models/registerSchema.js'
+import User from '../models/User.js'
 
 
 // export const registeration = async(req,res, )=>{

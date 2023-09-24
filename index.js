@@ -20,7 +20,7 @@ const connect = async () => {
     .then(()=>{
         console.log("mongo db conected");
     }).catch((err)=>{
-        // console.log("error");
+        console.log("error");
         throw err;
     })
 }
@@ -36,13 +36,13 @@ app.use((req, res, next) => {
     next()
 })
 // routes
-app.use("/api/auth", authRoutes)
-app.use("api/profile", profileRoutes)
+app.use("/auth", authRoutes)
+app.use("/profile", profileRoutes)
 // app.use("api/users", userRoutes)
-app.use("api/post", postRoutes);
+app.use("/post", postRoutes);
 
 app.listen(port,() => {
+    console.log(`server is running port no ${port}`);
     connect()
-    console.log("server is running");
 });
 

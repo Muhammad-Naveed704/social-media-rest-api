@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import User  from "../models/registerSchema.js";
+import User  from "../models/User.js";
 
 
 // get user
@@ -26,6 +26,7 @@ export const updatePofile = async (req, res) => {
                     req.body.password = await bcrypt.hash(req.body.password, salt)
                 } catch (error) {
                     res.status(500).json(error)
+                    res.status(404).send("not found")
                 }
             }
             try {
@@ -72,7 +73,7 @@ export const followUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         const currentUser = await User.findById(req.body.userId);
-        if(!user.includes(req.body.userId)){
+        if(!user.followers.includes(req.body.userId)){
             await user.updateOne({$push: {followers: req.body.userId}});
             await currentUser.updateOne({$push: {following: req.params.id}});
             res.status(200).json("user has been followed")
@@ -93,12 +94,12 @@ export const unfollowUser = async (req, res) => {
      try {
          const user = await User.findById(req.params.id);
          const currentUser = await User.findById(req.body.userId);
-         if(!user.includes(req.body.userId)){
+         if(!user.followers.includes(req.body.userId)){
              await user.updateOne({$pull: {followers: req.body.userId}});
              await currentUser.updateOne({$pull: {following: req.params.id}});
              res.status(200).json("user has been unfollowed")
          }else{
-             res.status(403).json("you dont follow this user")
+             res.status(403).json("you dont unfollow this user")
          }
      } catch (error) {
          res.status(500).json(error)    
